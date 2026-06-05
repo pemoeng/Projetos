@@ -71,23 +71,16 @@ for row in ws.iter_rows(min_row=2, values_only=False):
         "marca":     marc
     })
 
-# Substitui o bloco UPDATE_TIME e o bloco DATA no HTML, mantendo todo o layout intacto
-now_str = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+# Substitui apenas o bloco DATA no HTML, mantendo todo o layout intacto
 new_data = json.dumps(rows, ensure_ascii=False)
 
 with open("index.html", "r", encoding="utf-8") as f:
     html = f.read()
 
 html_new = re.sub(
-    r'const UPDATE_TIME = ".*?";',
-    f'const UPDATE_TIME = "{now_str}";',
-    html
-)
-
-html_new = re.sub(
     r'const DATA = \[.*?\];',
     f'const DATA = {new_data};',
-    html_new,
+    html,
     flags=re.DOTALL
 )
 
